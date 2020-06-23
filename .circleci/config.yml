@@ -11,7 +11,7 @@ jobs:
       #- run: jq --version
       - run:
           command: |
-            STATUS=$(curl -u "${SONAR_TOKEN}:" https://sonarcloud.io/api/qualitygates/project_status?projectKey=kura2020_public2020 | jq -r '.projectStatus.status')
+            STATUS=$(curl -u "${SONAR_TOKEN}:" https://sonarcloud.io/api/qualitygates/project_status?projectKey=kura2020_public2020&branch=ErrorBranch | jq -r '.projectStatus.status')
             echo "Status of SonarQube task is ${STATUS} "
             if [ "${STATUS}" != "OK" ]; then
                 echo "Quality gate is not OK - exiting with error"
