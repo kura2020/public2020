@@ -70,5 +70,7 @@ workflows:
           context: sonarcloud
           filters:
             branches:
-              only: master
+              only: 
+                - master
+                - develop
           
