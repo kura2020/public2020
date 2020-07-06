@@ -12,7 +12,7 @@ jobs:
             [[ ! -d $CIRCLE_WORKING_DIRECTORY ]] && mkdir -p $CIRCLE_WORKING_DIRECTORY
             cd $CIRCLE_WORKING_DIRECTORY
 
-            ls /Users/me/.ssh
+            ssh -o "StrictHostKeyChecking=no"
             #echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
             git init
             git remote add origin $CIRCLE_REPOSITORY_URL
