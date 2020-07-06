@@ -4,7 +4,26 @@ jobs:
     docker: # Executor タイプです。他に machine、macOS という実行タイプを指定できます
       - image: circleci/node:10 # プライマリコンテナです。このなかでジョブコマンドが実行されます      
     steps:
-      - checkout
+      #- checkout
+      #GitHub Sparse checkout
+      - run:
+        command:
+        CIRCLE_WORKING_DIRECTORY="${CIRCLE_WORKING_DIRECTORY/#\~/$HOME}"
+        [[ ! -d $CIRCLE_WORKING_DIRECTORY ]] && mkdir -p $CIRCLE_WORKING_DIRECTORY
+        cd $CIRCLE_WORKING_DIRECTORY
+
+        git init
+        git remote add origin $CIRCLE_REPOSITORY_URL
+        git config core.sparsecheckout true
+
+        [[ -n $FILES ]] && echo $FILES | sed 's/,/\n/g' | tee .git/info/sparse-checkout
+
+        git fetch --depth=2 origin $CIRCLE_BRANCH
+        git fetch --depth=1 origin HEAD:refs/remotes/origin/HEAD
+        git checkout ${CIRCLE_BRANCH:-${CIRCLE_TAG}}
+      
+      -run: ls -l  $CIRCLE_WORKING_DIRECTORY
+      #SonarCloud
       - run: npm install typescript
       - sonarcloud/scan
       #- run: echo "hello worldx"
