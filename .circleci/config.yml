@@ -20,8 +20,8 @@ jobs:
             git fetch origin ${CIRCLE_BRANCH}
             git checkout ${CIRCLE_BRANCH}
             export GIT_SSH_COMMAND='ssh -o "StrictHostKeyChecking=yes"'
+            ls -l
 
-      - run: ls -l  $CIRCLE_WORKING_DIRECTORY
       #SonarCloud
       - run: npm install typescript
       - sonarcloud/scan
