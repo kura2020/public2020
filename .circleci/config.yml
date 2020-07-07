@@ -8,17 +8,18 @@ jobs:
       #GitHub Sparse checkout
       - run:
           command: |
+            pwd
             [[ ! -d $CIRCLE_WORKING_DIRECTORY ]] && mkdir -p $CIRCLE_WORKING_DIRECTORY
             cd $CIRCLE_WORKING_DIRECTORY
-            
+            pwd
             export GIT_SSH_COMMAND='ssh -o "StrictHostKeyChecking=no"'
 
             git init
             git remote add origin $CIRCLE_REPOSITORY_URL
             git config core.sparsecheckout true
 
-            echo "helloworld-webpart/" > .git/info/sparse-checkout
-            echo "sonar-project.properties" > .git/info/sparse-checkout
+            echo "helloworld-webpart/" >> .git/info/sparse-checkout
+            echo "sonar-project.properties" >> .git/info/sparse-checkout
             git fetch origin ${CIRCLE_BRANCH}
             git checkout ${CIRCLE_BRANCH}
             export GIT_SSH_COMMAND='ssh -o "StrictHostKeyChecking=yes"'
@@ -27,8 +28,6 @@ jobs:
       #SonarCloud
       - run: npm install typescript
       - sonarcloud/scan
-      #- run: echo "hello worldx"
-      #- run: jq --version
       - run:
           command: |
             STATUS=$(curl -u "${SONAR_TOKEN}:" https://sonarcloud.io/api/qualitygates/project_status?projectKey=kura2020_public2020 | jq -r '.projectStatus.status')
