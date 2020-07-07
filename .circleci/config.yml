@@ -6,13 +6,14 @@ jobs:
     steps:
       #- checkout
       #GitHub Sparse checkout
-      - run: ls -l ~/.ssh
       - run: ls -l  $CIRCLE_WORKING_DIRECTORY
       - run:
           command: |
             [[ ! -d $CIRCLE_WORKING_DIRECTORY ]] && mkdir -p $CIRCLE_WORKING_DIRECTORY
             cd $CIRCLE_WORKING_DIRECTORY
-
+            export GIT_SSH_COMMAND='ssh -o "StrictHostKeyChecking=no"'
+            echo Using SSH Config Dir $SSH_CONFIG_DIR
+            mkdir -p $SSH_CONFIG_DIR
             echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> /home/circleci/.ssh/config
             git init
             git remote add origin $CIRCLE_REPOSITORY_URL
@@ -20,9 +21,9 @@ jobs:
 
             [[ -n $FILES ]] && echo $FILES | sed 's/,/\n/g' | tee .git/info/sparse-checkout
 
-            git fetch origin "${CIRCLE_BRANCH}
-            git checkout ${CIRCLE_BRANCH}
-      
+            #git fetch origin "${CIRCLE_BRANCH}
+            #git checkout ${CIRCLE_BRANCH}
+  
       - run: ls -l  $CIRCLE_WORKING_DIRECTORY
       #SonarCloud
       - run: npm install typescript
