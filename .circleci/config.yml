@@ -9,9 +9,6 @@ jobs:
       - run:
           command: |
             pwd
-            [[ ! -d $CIRCLE_WORKING_DIRECTORY ]] && mkdir -p $CIRCLE_WORKING_DIRECTORY
-            cd $CIRCLE_WORKING_DIRECTORY
-            pwd
             export GIT_SSH_COMMAND='ssh -o "StrictHostKeyChecking=no"'
 
             git init
