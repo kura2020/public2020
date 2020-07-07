@@ -6,6 +6,8 @@ jobs:
     steps:
       #- checkout
       #GitHub Sparse checkout
+      - run: ls -l ~/.ssh
+      - run: ls -l  $CIRCLE_WORKING_DIRECTORY
       - run:
           command: |
             [[ ! -d $CIRCLE_WORKING_DIRECTORY ]] && mkdir -p $CIRCLE_WORKING_DIRECTORY
