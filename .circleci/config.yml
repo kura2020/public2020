@@ -13,11 +13,12 @@ jobs:
             
             export GIT_SSH_COMMAND='ssh -o "StrictHostKeyChecking=no"'
 
-            git clone --no-checkout $CIRCLE_REPOSITORY_URL $CIRCLE_WORKING_DIRECTORY
-            git sparse-checkout init --cone
-            git sparse-checkout set "helloworld-webpart"
-            git sparse-checkout set "sonar-project.properties"
-            git sparse-checkout list
+            git init
+            git remote add origin $CIRCLE_REPOSITORY_URL
+            git config core.sparsecheckout true
+
+            echo "helloworld-webpart/" > .git/info/sparse-checkout
+            echo "sonar-project.properties" > .git/info/sparse-checkout
             git fetch origin "${CIRCLE_BRANCH}
             git checkout ${CIRCLE_BRANCH}
             export GIT_SSH_COMMAND='ssh -o "StrictHostKeyChecking=yes"'
