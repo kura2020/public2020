@@ -8,20 +8,17 @@ jobs:
       #GitHub Sparse checkout
       - run:
           command: |
-            pwd
             export GIT_SSH_COMMAND='ssh -o "StrictHostKeyChecking=no"'
-
             git init
             git remote add origin $CIRCLE_REPOSITORY_URL
             git config core.sparsecheckout true
-
             echo "helloworld-webpart/" >> .git/info/sparse-checkout
             echo "sonar-project.properties" >> .git/info/sparse-checkout
             git fetch origin ${CIRCLE_BRANCH}
             git checkout ${CIRCLE_BRANCH}
             export GIT_SSH_COMMAND='ssh -o "StrictHostKeyChecking=yes"'
+            pwd
             ls -l
-
       #SonarCloud
       - run: npm install typescript
       - sonarcloud/scan
