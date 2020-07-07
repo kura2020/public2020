@@ -16,9 +16,11 @@ jobs:
             git config core.sparsecheckout true
 
             [[ -n $FILES ]] && echo $FILES | sed 's/,/\n/g' | tee .git/info/sparse-checkout
+            cat .git/info/sparse-checkout
 
             git fetch origin ${CIRCLE_BRANCH}
             git checkout ${CIRCLE_BRANCH}
+            export GIT_SSH_COMMAND='ssh -o "StrictHostKeyChecking=yes"'
 
       - run: ls -l  $CIRCLE_WORKING_DIRECTORY
       #SonarCloud
